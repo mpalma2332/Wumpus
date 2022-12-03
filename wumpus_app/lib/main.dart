@@ -1,10 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+List<Widget> gridChild = [
+  Container(
+    margin: const EdgeInsets.all(6.0),
+    color: Colors.green,
+  ),
+  Container(
+    margin: const EdgeInsets.all(6.0),
+    color: Colors.green,
+  ),
+  Container(
+    margin: const EdgeInsets.all(6.0),
+    color: Colors.green,
+  ),
+  Container(
+    margin: const EdgeInsets.all(6.0),
+    color: Colors.green,
+  ),
+  Container(
+    margin: const EdgeInsets.all(6.0),
+    color: Colors.green,
+  ),
+  Container(
+    margin: const EdgeInsets.all(6.0),
+    color: Colors.green,
+  ),
+  Container(
+    margin: const EdgeInsets.all(6.0),
+    color: Colors.green,
+  ),
+  Container(
+    margin: const EdgeInsets.all(6.0),
+    color: Colors.green,
+  ),
+  Container(
+    margin: const EdgeInsets.all(6.0),
+    color: Colors.green,
+  ),
+];
+
 final imageMap = {
-  'none': Image.asset('assets/images/black_square.png'),
-  'moved': Image.asset('assets/images/light_square.png'),
-  'current': Image.asset('assets/images/green_square.png'),
+  0: Image.asset('assets/images/black_square.png'),
+  1: Image.asset('assets/images/black_square.png'),
+  2: Image.asset('assets/images/black_square.png'),
+  3: Image.asset('assets/images/black_square.png'),
+  4: Image.asset('assets/images/black_square.png'),
+  5: Image.asset('assets/images/black_square.png'),
+  6: Image.asset('assets/images/black_square.png'),
+  7: Image.asset('assets/images/black_square.png'),
+  8: Image.asset('assets/images/black_square.png'),
 };
 
 void main() {
@@ -56,21 +101,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   Flexible(
                     child: AspectRatio(
                         aspectRatio: 1 / 1,
-                        child: Stack(
-                          children: [
-                            GridView.builder(
-                                itemCount: 25,
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 5),
-                                itemBuilder: (context, index) {
-                                  return TextButton(
-                                    // onPressed: () => _processPress(index),
-                                    onPressed: null,
-                                    child: imageMap['green'] ?? Container(),
-                                  );
-                                })
-                          ],
+                        child: GridView.count(
+                          crossAxisCount: 3,
+                          children: List.generate(
+                              gridChild.length, (index) => gridChild[index]),
                         )),
                   ),
                   Container(
@@ -86,6 +120,14 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                         ]),
+                  ),
+                  TextButton(
+                    style: ButtonStyle(
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.blue),
+                    ),
+                    onPressed: () {},
+                    child: const Text('TextButton'),
                   )
                 ],
               ),
