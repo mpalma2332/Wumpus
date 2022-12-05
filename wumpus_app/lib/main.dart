@@ -1,138 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-List<Widget> gridChild = [
-  Container(
-    margin: const EdgeInsets.all(6.0),
-    color: Colors.green,
-  ),
-  Container(
-    margin: const EdgeInsets.all(6.0),
-    color: Colors.green,
-  ),
-  Container(
-    margin: const EdgeInsets.all(6.0),
-    color: Colors.green,
-  ),
-  Container(
-    margin: const EdgeInsets.all(6.0),
-    color: Colors.green,
-  ),
-  Container(
-    margin: const EdgeInsets.all(6.0),
-    color: Colors.green,
-  ),
-  Container(
-    margin: const EdgeInsets.all(6.0),
-    color: Colors.green,
-  ),
-  Container(
-    margin: const EdgeInsets.all(6.0),
-    color: Colors.green,
-  ),
-  Container(
-    margin: const EdgeInsets.all(6.0),
-    color: Colors.green,
-  ),
-  Container(
-    margin: const EdgeInsets.all(6.0),
-    color: Colors.green,
-  ),
-];
-
-final imageMap = {
-  0: Image.asset('assets/images/black_square.png'),
-  1: Image.asset('assets/images/black_square.png'),
-  2: Image.asset('assets/images/black_square.png'),
-  3: Image.asset('assets/images/black_square.png'),
-  4: Image.asset('assets/images/black_square.png'),
-  5: Image.asset('assets/images/black_square.png'),
-  6: Image.asset('assets/images/black_square.png'),
-  7: Image.asset('assets/images/black_square.png'),
-  8: Image.asset('assets/images/black_square.png'),
-};
+import 'homepage.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Hunt the Wumpus',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: const MyHomePage(title: 'Hunt the Wumpus'),
+      home: HomePage(),
     );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(minWidth: 50.0, minHeight: 120.0),
-            child: AspectRatio(
-              aspectRatio: 5 / 6,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Flexible(
-                    child: AspectRatio(
-                        aspectRatio: 1 / 1,
-                        child: GridView.count(
-                          crossAxisCount: 3,
-                          children: List.generate(
-                              gridChild.length, (index) => gridChild[index]),
-                        )),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.all(10.0),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          FittedBox(
-                            fit: BoxFit.fitWidth,
-                            child: Text(
-                              'Text here',
-                              style: TextStyle(fontSize: 36),
-                            ),
-                          ),
-                        ]),
-                  ),
-                  TextButton(
-                    style: ButtonStyle(
-                      foregroundColor:
-                          MaterialStateProperty.all<Color>(Colors.blue),
-                    ),
-                    onPressed: () {},
-                    child: const Text('TextButton'),
-                  )
-                ],
-              ),
-            ),
-          ),
-        ));
   }
 }
