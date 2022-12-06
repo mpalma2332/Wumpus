@@ -85,6 +85,9 @@ class WumpusGame {
   List<int> player;
   List<int> wumpus;
 
+  bool gameOver = false;
+  String message = "";
+
   void setWumpus() {
     int x = rng.nextInt(size);
     int y = rng.nextInt(size);
@@ -262,38 +265,38 @@ class WumpusGame {
     return (board[player[0]][player[1]].bats);
   }
 
-  List interpretCommand(String comm) {
+  void setHeaders(bool finished, String msg) {
+    gameOver = finished;
+    message = msg;
+  }
+
+  void interpretCommand(String comm) {
     String action = comm[0];
     String dirStr = comm[1];
     Direction dir = Direction.getDirectionFromChar(dirStr);
     if (action == "m") {
       bool moved = move(dir);
       if (!moved) {
-        return [false, "That is an invalid direction. Please try again!"];
+        setHeaders(false, "That is an invalid direction. Please try again!");
       } else if (hitWumpus()) {
-        return [true, "The Wumpus got you. You lose!"];
+        setHeaders(true, "The Wumpus got you. You lose!");
       } else if (hitPit()) {
-        return [true, "You fell down a pit. You lose!"];
+        setHeaders(true, "You fell down a pit. You lose!");
       } else {
-        return [false, toString()];
+        setHeaders(false, "");
       }
     } else if (action == "s") {
       bool win = shoot(dir);
       if (win) {
-        return [true, "You shot the wumpus! You Win!\nCongratulations!"];
+        setHeaders(true, "You shot the wumpus! You Win!\nCongratulations!");
       } else {
         if (hitWumpus()) {
-          return [
-            true,
-            "You missed! The Wumpus ran through your tile and stomped you to death. You lose!"
-          ];
+          setHeaders(true,
+              "You missed! The Wumpus ran through your tile and stomped you to death. You lose!");
         } else if (arrows == 0) {
-          return [true, "You missed! You are out of arrows! You lose!"];
+          setHeaders(true, "You missed! You are out of arrows! You lose!");
         }
-        StringBuffer sb = StringBuffer();
-        sb.write("You missed!\n");
-        sb.write(toString());
-        return [false, sb.toString()];
+        setHeaders(false, "You missed!");
       }
     } else {
       throw Exception("Interpret Command: invalid action character");
@@ -307,13 +310,12 @@ int point2num(List<int> point, int size) {
 
 void main() {
   WumpusGame game = WumpusGame.standard();
-  print(game);
   bool gameOver = false;
-  while (!gameOver) {
+  while (!game.gameOver) {
+    print(game);
     String comm = stdin.readLineSync()!;
-    List result = game.interpretCommand(comm);
-    gameOver = result[0];
-    print(result[1]);
+    game.interpretCommand(comm);
+    print(game.message);
   }
   // print(game);
   // print(point2num(game.player, game.size));
