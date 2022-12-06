@@ -227,9 +227,9 @@ class WumpusGame {
   String senseStr() {
     List<bool> senses = sense();
     StringBuffer sb = StringBuffer();
-    if (senses[0]) sb.write("flapping\n");
-    if (senses[1]) sb.write("breeze\n");
-    if (senses[2]) sb.write("smell\n");
+    if (senses[0]) sb.write("flapping ");
+    if (senses[1]) sb.write("breeze ");
+    if (senses[2]) sb.write("smell");
     if (!(senses[0] || senses[1] || senses[2])) sb.write("nothing\n");
     return sb.toString();
   }
