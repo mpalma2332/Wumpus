@@ -270,6 +270,8 @@ class WumpusGame {
     message = msg;
   }
 
+  //command is 2 characters, the first is m or s (move or shoot) and the second is the direction: u, d, l, r (up, down, left, right)
+  //for instance, ml means move left and sd means shoot down.
   void interpretCommand(String comm) {
     String action = comm[0];
     String dirStr = comm[1];
