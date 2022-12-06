@@ -11,7 +11,7 @@ class TileNode {
 
   @override
   String toString() {
-    StringBuffer sb = new StringBuffer();
+    StringBuffer sb = StringBuffer();
     sb.write("visited: ");
     sb.write(visited);
     sb.write(", ");
@@ -133,6 +133,12 @@ class WumpusGame {
     }
     player[0] = x;
     player[1] = y;
+    if (hitBat()) {
+      x = rng.nextInt(size);
+      y = rng.nextInt(size);
+      player[0] = x;
+      player[1] = y;
+    }
     board[x][y].visited = true;
     return true;
   }
@@ -165,8 +171,14 @@ class WumpusGame {
       if (tile.bats && rng.nextBool()) {
         break;
       }
-      x = vector[0] + player[0];
-      y = vector[1] + player[1];
+      x += vector[0];
+      y += vector[1];
+      // StringBuffer sb = new StringBuffer();
+      // sb.write(x);
+      // sb.write(", ");
+      // sb.write(y);
+      // sb.write("\n");
+      // print(sb.toString());
     }
     if (!hit && rng.nextBool()) {
       _moveWumpus();
@@ -203,8 +215,8 @@ class WumpusGame {
     }
     sb.write("\n");
     sb.write(senseStr());
-    sb.write("\n");
-    sb.write(wumpus);
+    // sb.write("\n");
+    // sb.write(wumpus);
     return sb.toString();
   }
 
@@ -236,25 +248,54 @@ class WumpusGame {
     }
     return result;
   }
-}
 
-bool interpretCommand(WumpusGame game, String comm) {
-  String action = comm[0];
-  String dirStr = comm[1];
-  Direction dir = Direction.getDirectionFromChar(dirStr);
-  if (action == "m") {
-    bool moved = game.move(dir);
-    if (!moved) {
-      print("That is an invalid direction. Please try again!");
+  bool hitWumpus() {
+    return (player[0] == wumpus[0] && player[1] == wumpus[1]);
+  }
+
+  bool hitPit() {
+    return (board[player[0]][player[1]].pit);
+  }
+
+  bool hitBat() {
+    return (board[player[0]][player[1]].bats);
+  }
+
+  bool interpretCommand(String comm) {
+    String action = comm[0];
+    String dirStr = comm[1];
+    Direction dir = Direction.getDirectionFromChar(dirStr);
+    if (action == "m") {
+      bool moved = move(dir);
+      if (!moved) {
+        print("That is an invalid direction. Please try again!");
+      } else if (hitWumpus()) {
+        print("The Wumpus got you. You lose!");
+        return true;
+      } else if (hitPit()) {
+        print("You fell down a pit. You lose!");
+        return true;
+      } else {
+        print(toString());
+      }
+      return false;
+    } else if (action == "s") {
+      bool win = shoot(dir);
+      if (win) {
+        print("You shot the wumpus! You Win!\nCongratulations!");
+      } else {
+        print("You missed!");
+        print(toString());
+        if (hitWumpus()) {
+          print(
+              "The Wumpus ran through your tile and stomped you to death. You lose!");
+          return true;
+        }
+      }
+      return win;
     } else {
-      print(game);
+      throw Exception("Interpret Command: invalid action character");
     }
-    return false;
-  } else if (action == "s") {
-    bool win = game.shoot(dir);
-    return win;
-  } else {
-    throw Exception("Interpret Command: invalid action character");
   }
 }
 
@@ -264,7 +305,6 @@ void main() {
   bool gameOver = false;
   while (!gameOver) {
     String comm = stdin.readLineSync()!;
-    gameOver = interpretCommand(game, comm);
+    gameOver = game.interpretCommand(comm);
   }
-  print("You win!");
 }
