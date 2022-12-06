@@ -171,9 +171,8 @@ class WumpusGame {
       if (tile.bats && rng.nextBool()) {
         break;
       }
-      vector += vector;
-      x = vector[0] + player[0];
-      y = vector[1] + player[1];
+      x += vector[0];
+      y += vector[1];
       // StringBuffer sb = new StringBuffer();
       // sb.write(x);
       // sb.write(", ");
@@ -216,8 +215,8 @@ class WumpusGame {
     }
     sb.write("\n");
     sb.write(senseStr());
-    sb.write("\n");
-    sb.write(wumpus);
+    // sb.write("\n");
+    // sb.write(wumpus);
     return sb.toString();
   }
 
@@ -262,31 +261,32 @@ class WumpusGame {
     return (board[player[0]][player[1]].bats);
   }
 
-  bool interpretCommand(WumpusGame game, String comm) {
+  bool interpretCommand(String comm) {
     String action = comm[0];
     String dirStr = comm[1];
     Direction dir = Direction.getDirectionFromChar(dirStr);
     if (action == "m") {
-      bool moved = game.move(dir);
+      bool moved = move(dir);
       if (!moved) {
         print("That is an invalid direction. Please try again!");
-      } else if (game.hitWumpus()) {
+      } else if (hitWumpus()) {
         print("The Wumpus got you. You lose!");
         return true;
-      } else if (game.hitPit()) {
+      } else if (hitPit()) {
         print("You fell down a pit. You lose!");
         return true;
       } else {
-        print(game);
+        print(toString());
       }
       return false;
     } else if (action == "s") {
-      bool win = game.shoot(dir);
+      bool win = shoot(dir);
       if (win) {
         print("You shot the wumpus! You Win!\nCongratulations!");
       } else {
         print("You missed!");
-        if (game.hitWumpus()) {
+        print(toString());
+        if (hitWumpus()) {
           print(
               "The Wumpus ran through your tile and stomped you to death. You lose!");
           return true;
@@ -305,6 +305,6 @@ void main() {
   bool gameOver = false;
   while (!gameOver) {
     String comm = stdin.readLineSync()!;
-    gameOver = game.interpretCommand(game, comm);
+    gameOver = game.interpretCommand(comm);
   }
 }
