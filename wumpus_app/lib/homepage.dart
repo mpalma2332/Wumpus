@@ -167,7 +167,7 @@ class HomePageState extends State<HomePage> {
                                           MyButton(
                                               color: Colors.grey,
                                               child: Icon(
-                                                Icons.arrow_drop_up,
+                                                Icons.whatshot,
                                                 size: 50,
                                               )),
                                           MyButton(),
@@ -178,14 +178,14 @@ class HomePageState extends State<HomePage> {
                                           MyButton(
                                               color: Colors.grey,
                                               child: Icon(
-                                                Icons.arrow_left,
+                                                Icons.whatshot,
                                                 size: 50,
                                               )),
                                           MyButton(),
                                           MyButton(
                                               color: Colors.grey,
                                               child: Icon(
-                                                Icons.arrow_right,
+                                                Icons.whatshot,
                                                 size: 50,
                                               )),
                                         ],
@@ -196,7 +196,7 @@ class HomePageState extends State<HomePage> {
                                           MyButton(
                                               color: Colors.grey,
                                               child: Icon(
-                                                Icons.arrow_drop_down,
+                                                Icons.whatshot,
                                                 size: 50,
                                               )),
                                           MyButton(),
