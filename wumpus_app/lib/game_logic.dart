@@ -299,6 +299,10 @@ class WumpusGame {
   }
 }
 
+int point2num(List<int> point, int size) {
+  return point[0] + point[1] * size;
+}
+
 void main() {
   WumpusGame game = WumpusGame.standard();
   print(game);
@@ -307,4 +311,6 @@ void main() {
     String comm = stdin.readLineSync()!;
     gameOver = game.interpretCommand(comm);
   }
+  // print(game);
+  // print(point2num(game.player, game.size));
 }
