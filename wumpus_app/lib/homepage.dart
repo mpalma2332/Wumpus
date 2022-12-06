@@ -95,7 +95,7 @@ class HomePageState extends State<HomePage> {
                               fit: BoxFit.fitWidth,
                               //Backend: update status
                               child: Text(
-                                "Status update",
+                                "Status update long sentence",
                                 style: TextStyle(fontSize: 36),
                               ),
                             ),
