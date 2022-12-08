@@ -2,48 +2,91 @@ import 'package:flutter/material.dart';
 import 'package:wumpus_app/button.dart';
 import 'package:wumpus_app/pixel.dart';
 
+import 'game_logic.dart';
+
 class HomePage extends StatefulWidget {
   @override
   HomePageState createState() => HomePageState();
 }
 
 class HomePageState extends State<HomePage> {
-  int numberofSquares = 25; // backend
-  int numColumInRow = 5;
-  int playerPosition = 0; //backend playerPosition
+  final _wumpusGame = WumpusGame(5, 3, 3, 5);
+  late int numberofSquares = _wumpusGame.size * _wumpusGame.size;
+  late int numColumInRow = _wumpusGame.size;
+  late int playerPosition = point2num(_wumpusGame.player, _wumpusGame.size);
   List<int> moved = [];
 
   void moveUp() {
     setState(() {
-      if (playerPosition - numColumInRow >= 0) {
-        playerPosition -= numColumInRow;
-      }
+      // if (playerPosition - numColumInRow >= 0) {
+      //   playerPosition -= numColumInRow;
+      //   _wumpusGame.interpretCommand("mu");
+      // }
+      _wumpusGame.interpretCommand("mu");
+      playerPosition = point2num(_wumpusGame.player, _wumpusGame.size);
     });
   }
 
   void moveDown() {
     setState(() {
-      if (playerPosition + numColumInRow < numberofSquares) {
-        playerPosition += numColumInRow;
-      }
+      // if (playerPosition + numColumInRow < numberofSquares) {
+      //   playerPosition += numColumInRow;
+      //   _wumpusGame.interpretCommand("md");
+      // }
+      _wumpusGame.interpretCommand("md");
+      playerPosition = point2num(_wumpusGame.player, _wumpusGame.size);
     });
   }
 
   void moveLeft() {
     setState(() {
       // not in first column then can move left
-      if (!(playerPosition % numColumInRow == 0)) {
-        playerPosition -= 1;
-      }
+      // if (!(playerPosition % numColumInRow == 0)) {
+      //   playerPosition -= 1;
+      //   _wumpusGame.interpretCommand("ml");
+      // }
+      _wumpusGame.interpretCommand("ml");
+      playerPosition = point2num(_wumpusGame.player, _wumpusGame.size);
     });
   }
 
   void moveRight() {
     setState(() {
       // not in last column then can move right
-      if (!(playerPosition % numColumInRow == (numColumInRow - 1))) {
-        playerPosition += 1;
-      }
+      // if (!(playerPosition % numColumInRow == (numColumInRow - 1))) {
+      //   playerPosition += 1;
+      //   _wumpusGame.interpretCommand("mr");
+      // }
+      _wumpusGame.interpretCommand("mr");
+      playerPosition = point2num(_wumpusGame.player, _wumpusGame.size);
+    });
+  }
+
+  void shootLeft() {
+    setState(() {
+      // not in first column then can move left
+      _wumpusGame.interpretCommand("sl");
+    });
+  }
+
+  void shootRight() {
+    setState(() {
+      // not in first column then can move left
+      _wumpusGame.interpretCommand("sr");
+    });
+  }
+
+  void shootUp() {
+    setState(() {
+      // not in first column then can move left
+      _wumpusGame.interpretCommand("su");
+    });
+  }
+
+  void shootDown() {
+    setState(() {
+      // not in first column then can move left
+      _wumpusGame.interpretCommand("sd");
     });
   }
 
@@ -88,18 +131,30 @@ class HomePageState extends State<HomePage> {
                   Expanded(
                     child: Container(
                       child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             // ignore: prefer_const_constructors
-                            FittedBox(
-                              fit: BoxFit.fitWidth,
-                              //Backend: update status
-                              child: Text(
-                                "Status update long sentence",
-                                style: TextStyle(fontSize: 36),
+                            Expanded(
+                              child: FittedBox(
+                                fit: BoxFit.fitWidth,
+                                //Backend: update status
+                                child: Text(
+                                  _wumpusGame.senseStr(),
+                                  style: TextStyle(fontSize: 28),
+                                  // textAlign: TextAlign.left,
+                                ),
                               ),
                             ),
-
+                            Expanded(
+                              child: FittedBox(
+                                fit: BoxFit.fitWidth,
+                                //Backend: update status
+                                child: Text(
+                                  _wumpusGame.message,
+                                  style: TextStyle(fontSize: 28),
+                                ),
+                              ),
+                            ),
                             Row(children: [
                               Container(
                                 child: Column(
@@ -165,6 +220,7 @@ class HomePageState extends State<HomePage> {
                                         children: [
                                           MyButton(),
                                           MyButton(
+                                              function: shootUp,
                                               color: Colors.grey,
                                               child: Icon(
                                                 Icons.whatshot,
@@ -176,6 +232,7 @@ class HomePageState extends State<HomePage> {
                                       Row(
                                         children: [
                                           MyButton(
+                                              function: shootRight,
                                               color: Colors.grey,
                                               child: Icon(
                                                 Icons.whatshot,
@@ -183,6 +240,7 @@ class HomePageState extends State<HomePage> {
                                               )),
                                           MyButton(),
                                           MyButton(
+                                              function: shootLeft,
                                               color: Colors.grey,
                                               child: Icon(
                                                 Icons.whatshot,
@@ -194,6 +252,7 @@ class HomePageState extends State<HomePage> {
                                         children: [
                                           MyButton(),
                                           MyButton(
+                                              function: shootDown,
                                               color: Colors.grey,
                                               child: Icon(
                                                 Icons.whatshot,

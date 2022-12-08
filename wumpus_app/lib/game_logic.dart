@@ -86,7 +86,7 @@ class WumpusGame {
   List<int> wumpus;
 
   bool gameOver = false;
-  String message = "";
+  String message = " ";
 
   void setWumpus() {
     int x = rng.nextInt(size);
@@ -230,7 +230,7 @@ class WumpusGame {
     if (senses[0]) sb.write("flapping ");
     if (senses[1]) sb.write("breeze ");
     if (senses[2]) sb.write("smell");
-    if (!(senses[0] || senses[1] || senses[2])) sb.write("nothing\n");
+    if (!(senses[0] || senses[1] || senses[2])) sb.write("nothing");
     return sb.toString();
   }
 
@@ -285,12 +285,12 @@ class WumpusGame {
       } else if (hitPit()) {
         setHeaders(true, "You fell down a pit. You lose!");
       } else {
-        setHeaders(false, "");
+        setHeaders(false, " ");
       }
     } else if (action == "s") {
       bool win = shoot(dir);
       if (win) {
-        setHeaders(true, "You shot the wumpus! You Win!\nCongratulations!");
+        setHeaders(true, "You shot the wumpus! You Win! Congratulations!");
       } else {
         if (hitWumpus()) {
           setHeaders(true,
